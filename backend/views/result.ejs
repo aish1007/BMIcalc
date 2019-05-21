@@ -1,0 +1,15 @@
+<div class="resultClass">
+<h1>Your BMI is <%= bmi %></h1>
+
+<%if( weight > 0 && height > 0){	%>
+<%if ( bmi < 18.5 ) { %>
+    <h2> You are underweight. </h2>
+<% }if( bmi > 18.5 && bmi < 25){ %>
+    <h2> You are healthy. </h2>
+<% }if( bmi > 25){ %>
+    <h2> You are Obese. </h2>
+<% } } else{ %>
+    <h2>Incorrect details. Please re-enter the details</h2>
+<%}%>
+
+</div>

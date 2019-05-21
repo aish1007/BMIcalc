@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<style>
+.bmicontainer{
+  text-align:center;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 300px;
+    margin-left: 400px;
+    background: whitesmoke;
+    padding: 20px;
+    display: none;
+}
+
+</style>
+</head>
+<body>
+ <div class="container">
+   <div class="jumbotron text-center">
+   <h1>BMI CALCULATOR</h1>
+   </div>
+
+
+  <div class="form-group">
+    <label for="weight">Weight (in kgs) </label>
+    <input  class="form-control" id="wt" name="weight" >
+   </div>
+  <div class="form-group">
+    <label for="height">Height (in mtrs) </label>
+    <input  class="form-control" id="ht" name="height"  >
+  </div>
+   <input type="submit" class="btn btn-primary" onclick="bmi313()"/>
+  
+  <div class = "bmicontainer" id="bmicontainer">
+    <h3 id="bmi"></h3>
+    <h3 id="msg"></h3>
+    </div>
+</div>
+</body>
+<script>
+function bmi313(){
+var msg,bmival;
+ var weight = document.getElementById("wt").value;
+ var height = document.getElementById("ht").value;
+ console.log("hello"+ weight.length,height);
+const Http = new XMLHttpRequest();
+const url='http://localhost:1337/bmi/calculate0313';
+Http.open("POST", url);
+
+var health = JSON.stringify({"weight": weight, "height": height});
+Http.send(health);
+Http.onreadystatechange=(e)=>{
+   bmival  = Http.response;
+ if(bmival != undefined && bmival != null){
+   console.log(bmival);
+  document.getElementById("bmicontainer").style.display = "block";
+if(weight.length != 0 || height.length != 0){ 
+document.getElementById("bmi").innerHTML = "Your BMI is : " + bmival;
+if( weight > 0 && height > 0 ){	
+if ( bmival < 18.5 ) { 
+    document.getElementById("msg").innerHTML = "You are underweight";
+     document.getElementById("msg").setAttribute("class", "text-warning");
+ }if( bmival > 18.5 && bmival < 25){ 
+   document.getElementById("msg").innerHTML = "You are healthy";
+    document.getElementById("msg").setAttribute("class", "text-success");
+ }if(bmival > 25){ 
+   document.getElementById("msg").innerHTML = "You are obese";
+   document.getElementById("msg").setAttribute("class", "text-danger");
+ } } else{ 
+   document.getElementById("bmi").innerHTML = "";
+    document.getElementById("msg").innerHTML = "Incorrect details. Please re-enter the details";
+}
+}
+else{
+  document.getElementById("bmi").innerHTML = "";
+  document.getElementById("msg").innerHTML = "The fields are empty. Please enter your input";
+}
+ }
+
+}
+
+
+
+
+
+
+}
+</script>
+</html>
