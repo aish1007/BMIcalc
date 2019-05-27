@@ -35,7 +35,7 @@
     <label for="height">Height (in mtrs) </label>
     <input  class="form-control" id="ht" name="height"  >
   </div>
-   <input type="submit" class="btn btn-primary" onclick="bmi313()"/>
+   <input type="submit" class="btn btn-primary" onclick="bmi()"/>
   
   <div class = "bmicontainer" id="bmicontainer">
     <h3 id="bmi"></h3>
@@ -44,46 +44,44 @@
 </div>
 </body>
 <script>
-function bmi313(){
+function bmi(){
 var msg,bmival;
  var weight = document.getElementById("wt").value;
  var height = document.getElementById("ht").value;
  console.log("hello"+ weight.length,height);
 const Http = new XMLHttpRequest();
-const url='http://localhost:1337/bmi/calculate0313';
+//const url='http://192.168.99.100:49161/bmi/calculate313';
+const url='https://bmicalc0313.azurewebsites.net/bmi/calculate313';
 Http.open("POST", url);
 
 var health = JSON.stringify({"weight": weight, "height": height});
-Http.send(health);
+
 Http.onreadystatechange=(e)=>{
-   bmival  = Http.response;
- if(bmival != undefined && bmival != null){
-   console.log(bmival);
-  document.getElementById("bmicontainer").style.display = "block";
-if(weight.length != 0 || height.length != 0){ 
-document.getElementById("bmi").innerHTML = "Your BMI is : " + bmival;
-if( weight > 0 && height > 0 ){	
-if ( bmival < 18.5 ) { 
-    document.getElementById("msg").innerHTML = "You are underweight";
-     document.getElementById("msg").setAttribute("class", "text-warning");
- }if( bmival > 18.5 && bmival < 25){ 
-   document.getElementById("msg").innerHTML = "You are healthy";
-    document.getElementById("msg").setAttribute("class", "text-success");
- }if(bmival > 25){ 
-   document.getElementById("msg").innerHTML = "You are obese";
-   document.getElementById("msg").setAttribute("class", "text-danger");
- } } else{ 
-   document.getElementById("bmi").innerHTML = "";
-    document.getElementById("msg").innerHTML = "Incorrect details. Please re-enter the details";
-}
-}
-else{
-  document.getElementById("bmi").innerHTML = "";
-  document.getElementById("msg").innerHTML = "The fields are empty. Please enter your input";
-}
+  if(Http.readyState == 4 && Http.status == 200){
+ if(Http.responseText != undefined && Http.responseText != null){
+ 
+   bmiresp = JSON.parse(Http.response);
+
+   document.getElementById("bmicontainer").style.display = "block";
+   if(bmiresp.bmival != ""){
+    document.getElementById("bmi").innerHTML = "Your bmi is " + bmiresp.bmival;
+    document.getElementById("msg").innerHTML = bmiresp.message;
+    document.getElementById("msg").setAttribute("class", bmiresp.css);
+   }
+   else
+   {
+    document.getElementById("bmi").innerHTML = "";
+    document.getElementById("msg").innerHTML = bmiresp.message;
+    document.getElementById("msg").setAttribute("class", bmiresp.css);
+   }
+
  }
 
 }
+
+  }
+
+Http.send(health);
 
 
 

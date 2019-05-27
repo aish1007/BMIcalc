@@ -32,7 +32,7 @@ module.exports.routes = {
   * not match any of those, it is matched against static assets.             *
   *                                                                          *
   ***************************************************************************/
-'POST /bmi/calculate0313': 'BmiController.calculate0313',
+'POST /bmi/calculate313': 'BmiController.calculate313',
 
 
 
